@@ -31,7 +31,11 @@ export function ResponsiveTrackerView({ personId }: { personId: PersonId }) {
   return (
     <div className="pb-24">
       <div className="md:hidden">
-        <MonthCalendarGrid personId={personId} onOpenDay={setOpenDate} />
+        <MonthCalendarGrid
+          personId={personId}
+          challengeDates={dates}
+          onOpenDay={setOpenDate}
+        />
         <div className="mt-4 border-t border-line px-3 pt-3">
           <p className="mb-1 text-sm font-semibold text-ink-muted">30 dias</p>
           {habits.map((habit) => (

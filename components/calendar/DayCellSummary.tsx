@@ -10,11 +10,13 @@ export function DayCellSummary({
   personId,
   dateISO,
   isCurrentMonth,
+  isInChallenge,
   onOpenDay,
 }: {
   personId: PersonId;
   dateISO: string;
   isCurrentMonth: boolean;
+  isInChallenge: boolean;
   onOpenDay: (dateISO: string) => void;
 }) {
   const { getStatus, cycle, failedKeys } = useCheckins();
@@ -24,6 +26,20 @@ export function DayCellSummary({
 
   if (!isCurrentMonth) {
     return <div className="min-h-20" />;
+  }
+
+  // In the viewed month but outside the 30-day challenge (e.g. the tail end
+  // of a month the challenge doesn't fully cover): show the day number only,
+  // not tappable — habit taps here would silently write check-ins that never
+  // show up in any stat or strip, which reads as "not saving" to the user.
+  if (!isInChallenge) {
+    return (
+      <div className="flex min-h-20 flex-col items-center gap-1 p-1 opacity-30">
+        <span className="font-hand text-lg leading-none text-ink-muted">
+          {dayNumber}
+        </span>
+      </div>
+    );
   }
 
   return (
