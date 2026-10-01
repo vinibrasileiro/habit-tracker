@@ -37,11 +37,19 @@ export const HABITS: HabitRow[] = [
     failed_glyph: "—",
   },
   {
+    id: "sem_doces_camila",
+    label: "Sem doces",
+    icon: "🍬",
+    person_id: "camila",
+    sort_order: 1,
+    failed_glyph: "✕",
+  },
+  {
     id: "sem_refrigerante_camila",
     label: "Sem refrigerante",
     icon: "🥤",
     person_id: "camila",
-    sort_order: 1,
+    sort_order: 2,
     failed_glyph: "✕",
   },
   {
@@ -49,7 +57,7 @@ export const HABITS: HabitRow[] = [
     label: "Treino",
     icon: "🏋️",
     person_id: "camila",
-    sort_order: 2,
+    sort_order: 3,
     failed_glyph: "—",
   },
 ];

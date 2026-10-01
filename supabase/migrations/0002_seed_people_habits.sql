@@ -12,8 +12,9 @@ insert into habits (id, label, icon, person_id, sort_order, failed_glyph) values
   ('sem_doces', 'Sem doces', '🍬', 'vinicius', 1, '✕'),
   ('sem_refrigerante_vinicius', 'Sem refrigerante', '🥤', 'vinicius', 2, '✕'),
   ('treino_vinicius', 'Treino', '🏋️', 'vinicius', 3, '—'),
-  ('sem_refrigerante_camila', 'Sem refrigerante', '🥤', 'camila', 1, '✕'),
-  ('treino_camila', 'Treino', '🏋️', 'camila', 2, '—')
+  ('sem_doces_camila', 'Sem doces', '🍬', 'camila', 1, '✕'),
+  ('sem_refrigerante_camila', 'Sem refrigerante', '🥤', 'camila', 2, '✕'),
+  ('treino_camila', 'Treino', '🏋️', 'camila', 3, '—')
 on conflict (id) do update set
   label = excluded.label,
   icon = excluded.icon,
