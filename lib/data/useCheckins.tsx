@@ -11,6 +11,7 @@ import {
 import { supabase } from "../supabase/client";
 import type { CheckinRow, CheckinStatus, PersonId } from "../supabase/types";
 import { cycleStatus } from "./cycleStatus";
+import { isPastDate } from "../date";
 
 function checkinKey(personId: PersonId, habitId: string, dateISO: string) {
   return `${personId}_${habitId}_${dateISO}`;
@@ -115,8 +116,14 @@ export function CheckinsProvider({
   );
 
   const getStatus = useCallback(
-    (personId: PersonId, habitId: string, dateISO: string): CheckinStatus =>
-      getRow(personId, habitId, dateISO)?.status ?? "unset",
+    (personId: PersonId, habitId: string, dateISO: string): CheckinStatus => {
+      const stored = getRow(personId, habitId, dateISO)?.status ?? "unset";
+      // A past day that was never filled in reads as "failed," not "unset" —
+      // once the day is gone, an empty cell means it didn't happen, not that
+      // it's still pending. This is derived at read time, not written to the
+      // row, so it stays correct even for days nobody ever opened the app.
+      return stored === "unset" && isPastDate(dateISO) ? "failed" : stored;
+    },
     [getRow]
   );
 

@@ -3,7 +3,7 @@
 import { TrackerCell } from "@/components/cell/TrackerCell";
 import { habitsForPerson } from "@/lib/data/habits";
 import { useCheckins } from "@/lib/data/useCheckins";
-import { todayISO } from "@/lib/date";
+import { isEditableDate, todayISO } from "@/lib/date";
 import type { PersonId } from "@/lib/supabase/types";
 
 export function DayCellSummary({
@@ -65,6 +65,7 @@ export function DayCellSummary({
             failedGlyph={habit.failed_glyph}
             ariaLabel={`${habit.label} — ${dateISO}`}
             hasError={failedKeys.has(`${personId}_${habit.id}_${dateISO}`)}
+            disabled={!isEditableDate(dateISO)}
             onTap={() => cycle(personId, habit.id, dateISO)}
           />
         ))}

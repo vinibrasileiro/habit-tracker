@@ -2,7 +2,7 @@
 
 import { habitsForPerson, personById } from "@/lib/data/habits";
 import { useCheckins } from "@/lib/data/useCheckins";
-import { fromISODate } from "@/lib/date";
+import { fromISODate, isEditableDate } from "@/lib/date";
 import type { PersonId } from "@/lib/supabase/types";
 
 function formatDayMonth(dateISO: string): string {
@@ -20,12 +20,20 @@ export function DayHabitEditor({
   title?: string;
 }) {
   const { getStatus, getRow, setStatus, failedKeys } = useCheckins();
+  const editable = isEditableDate(dateISO);
 
   return (
     <div className="flex flex-col gap-5">
-      <h2 className="text-lg font-semibold">
-        {title} — {formatDayMonth(dateISO)}
-      </h2>
+      <div>
+        <h2 className="text-lg font-semibold">
+          {title} — {formatDayMonth(dateISO)}
+        </h2>
+        {!editable && (
+          <p className="mt-1 text-xs text-ink-muted">
+            Dia encerrado — não é mais possível alterar.
+          </p>
+        )}
+      </div>
       {personIds.map((personId) => {
         const person = personById(personId);
         const habits = habitsForPerson(personId);
@@ -51,6 +59,7 @@ export function DayHabitEditor({
                     <div className="flex gap-2">
                       <EditButton
                         active={status === "done"}
+                        disabled={!editable}
                         label={`✓ ${doneLabel}`}
                         tone="done"
                         onClick={() =>
@@ -64,6 +73,7 @@ export function DayHabitEditor({
                       />
                       <EditButton
                         active={status === "failed"}
+                        disabled={!editable}
                         label={`✕ ${failedLabel}`}
                         tone="failed"
                         onClick={() =>
@@ -105,11 +115,13 @@ export function DayHabitEditor({
 
 function EditButton({
   active,
+  disabled = false,
   label,
   tone,
   onClick,
 }: {
   active: boolean;
+  disabled?: boolean;
   label: string;
   tone: "done" | "failed";
   onClick: () => void;
@@ -126,8 +138,9 @@ function EditButton({
   return (
     <button
       type="button"
+      disabled={disabled}
       onClick={onClick}
-      className={`rounded-md border px-2 py-1 text-xs font-medium transition-colors ${toneClasses}`}
+      className={`rounded-md border px-2 py-1 text-xs font-medium transition-colors disabled:opacity-40 disabled:hover:border-line disabled:hover:text-ink-muted ${toneClasses}`}
     >
       {label}
     </button>

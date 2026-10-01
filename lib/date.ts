@@ -72,3 +72,16 @@ export function monthGridDates(year: number, monthIndex0: number): string[] {
 }
 
 export const WEEKDAY_LABELS_PT = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"];
+
+/** Only today can be checked in or edited — yesterday and earlier are locked
+ * (and read as "failed" if never filled in, see getStatus in useCheckins),
+ * and tomorrow onward hasn't happened yet. This is deliberate: it's what
+ * keeps the habit tracker honest day-to-day instead of letting someone
+ * backfill a week of check-ins at once. */
+export function isEditableDate(dateISO: string): boolean {
+  return dateISO === todayISO();
+}
+
+export function isPastDate(dateISO: string): boolean {
+  return dateISO < todayISO();
+}

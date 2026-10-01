@@ -41,6 +41,7 @@ export function HabitStripRow({
             isToday={dateISO === today}
             ariaLabel={`${label} — ${dateISO}`}
             hasError={failedKeys.has(`${personId}_${habitId}_${dateISO}`)}
+            disabled={dateISO !== today}
             onTap={() => cycle(personId, habitId, dateISO)}
           />
         ))}

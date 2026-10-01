@@ -57,6 +57,7 @@ export function HabitDayMatrix({
                     hasError={failedKeys.has(
                       `${row.personId}_${row.habitId}_${dateISO}`
                     )}
+                    disabled={dateISO !== today}
                     onTap={() => cycle(row.personId, row.habitId, dateISO)}
                   />
                 </td>
